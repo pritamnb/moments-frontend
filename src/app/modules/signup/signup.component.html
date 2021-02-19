@@ -1,0 +1,203 @@
+<div class="alert alert-success textAlign" *ngIf="authMessage">
+  <div>
+    <p class="textAlign">{{ authMessage }}</p>
+  </div>
+</div>
+<form
+  [formGroup]="registrationForm"
+  (ngSubmit)="onSubmit($event)"
+  class="form-horizontal"
+  *ngIf="!isLoading"
+>
+  <div class="alert alert-danger textAlign" *ngIf="failMessage">
+    <div>
+      <p class="textAlign">{{ failMessage }}</p>
+    </div>
+  </div>
+  <div class="alert alert-success textAlign" *ngIf="successMessage">
+    <div>
+      <p class="textAlign">{{ successMessage }}</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <h4 class="card-title">Registration Form</h4>
+    </div>
+    <div class="card-body">
+      <div
+        class="row form-group"
+        [ngClass]="{ 'has-error': formErrors.firstName }"
+      >
+        <label for="firstName" class="col-sm-4 control-label fontWeight"
+          >First Name</label
+        >
+        <div class="col-sm-8">
+          <input
+            type="text"
+            formControlName="firstName"
+            id="firstName"
+            class="form-control"
+            (blur)="logValidationErrors()"
+          />
+          <span
+            class="help-block errorMessageStyle"
+            *ngIf="formErrors.firstName"
+          >
+            {{ formErrors.firstName }}
+          </span>
+        </div>
+      </div>
+      <div
+        class="row form-group"
+        [ngClass]="{ 'has-error': formErrors.lastName }"
+      >
+        <label for="lastName" class="col-sm-4 control-label fontWeight"
+          >Last Name</label
+        >
+        <div class="col-sm-8">
+          <input
+            type="text"
+            formControlName="lastName"
+            id="lastName"
+            class="form-control"
+            (blur)="logValidationErrors()"
+          />
+          <span
+            class="help-block errorMessageStyle"
+            *ngIf="formErrors.lastName"
+          >
+            {{ formErrors.lastName }}
+          </span>
+        </div>
+      </div>
+      <hr />
+      <div
+        class="row form-group"
+        [ngClass]="{ 'has-error': formErrors.password }"
+      >
+        <label for="password" class="col-sm-4 control-label fontWeight"
+          >Password</label
+        >
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input
+              [type]="passwordFieldTextType ? 'text' : 'password'"
+              formControlName="password"
+              id="password"
+              class="form-control"
+              (blur)="logValidationErrors()"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !passwordFieldTextType,
+                    'fa-eye': passwordFieldTextType
+                  }"
+                  (click)="togglePasswordFieldTextType()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <span
+            class="help-block mr-auto errorMessageStyle"
+            *ngIf="formErrors.password"
+          >
+            {{ formErrors.password }}
+          </span>
+        </div>
+      </div>
+      <div
+        class="row form-group"
+        [ngClass]="{ 'has-error': formErrors.confirmPassword }"
+      >
+        <label for="confirmPassword" class="col-sm-4 control-label fontWeight"
+          >Confirm Password</label
+        >
+        <div class="col-sm-8">
+          <div class="input-group">
+            <input
+              [type]="confirmPasswordFieldTextType ? 'text' : 'password'"
+              formControlName="confirmPassword"
+              id="confirmPassword"
+              class="form-control"
+              (blur)="logValidationErrors()"
+            />
+            <div class="input-group-append">
+              <span class="input-group-text">
+                <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-eye-slash': !confirmPasswordFieldTextType,
+                    'fa-eye': confirmPasswordFieldTextType
+                  }"
+                  (click)="toggleConfirmPasswordFieldTextType()"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <span
+            class="help-block errorMessageStyle"
+            *ngIf="formErrors.confirmPassword"
+          >
+            {{ formErrors.confirmPassword }}
+          </span>
+        </div>
+      </div>
+      <hr />
+      <div class="row form-group" [ngClass]="{ 'has-error': formErrors.email }">
+        <label for="email" class="col-sm-4 control-label fontWeight"
+          >Email</label
+        >
+        <div class="col-sm-8">
+          <input
+            type="text"
+            formControlName="email"
+            id="email"
+            class="form-control"
+            (blur)="logValidationErrors()"
+          />
+          <span class="help-block errorMessageStyle" *ngIf="formErrors.email">
+            {{ formErrors.email }}
+          </span>
+        </div>
+      </div>
+      <div class="row form-group" [ngClass]="{ 'has-error': formErrors.phone }">
+        <label for="phone" class="col-sm-4 control-label fontWeight"
+          >Phone</label
+        >
+        <div class="col-sm-8">
+          <input
+            type="text"
+            formControlName="phone"
+            appNumberInput
+            autocomplete="off"
+            id="phone"
+            class="form-control"
+            (blur)="logValidationErrors()"
+          />
+          <span class="help-block errorMessageStyle" *ngIf="formErrors.phone">
+            {{ formErrors.phone }}
+          </span>
+        </div>
+      </div>
+      <hr />
+    </div>
+    <div class="card-footer">
+      <div class="button-group">
+        <button
+          [disabled]="registrationForm.invalid || submitButtonStatus"
+          type="submit"
+          class="btn btn-primary"
+        >
+          Register
+        </button>
+        <p>
+          Already have an account?
+          <a class="loginBtn" routerLink="/login">Login</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</form>
