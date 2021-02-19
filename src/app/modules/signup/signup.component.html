@@ -7,7 +7,6 @@
   [formGroup]="registrationForm"
   (ngSubmit)="onSubmit($event)"
   class="form-horizontal"
-  *ngIf="!isLoading"
 >
   <div class="alert alert-danger textAlign" *ngIf="failMessage">
     <div>
@@ -163,22 +162,25 @@
           </span>
         </div>
       </div>
-      <div class="row form-group" [ngClass]="{ 'has-error': formErrors.phone }">
-        <label for="phone" class="col-sm-4 control-label fontWeight"
-          >Phone</label
+      <div
+        class="row form-group"
+        [ngClass]="{ 'has-error': formErrors.mobile }"
+      >
+        <label for="mobile" class="col-sm-4 control-label fontWeight"
+          >mobile</label
         >
         <div class="col-sm-8">
           <input
             type="text"
-            formControlName="phone"
+            formControlName="mobile"
             appNumberInput
             autocomplete="off"
-            id="phone"
+            id="mobile"
             class="form-control"
             (blur)="logValidationErrors()"
           />
-          <span class="help-block errorMessageStyle" *ngIf="formErrors.phone">
-            {{ formErrors.phone }}
+          <span class="help-block errorMessageStyle" *ngIf="formErrors.mobile">
+            {{ formErrors.mobile }}
           </span>
         </div>
       </div>

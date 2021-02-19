@@ -8,7 +8,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { UserService } from '../../services/user.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthCanActivateGuard implements CanActivate {
@@ -17,11 +17,7 @@ export class AuthCanActivateGuard implements CanActivate {
   private canActivateGenericMethod(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | boolean
-    | UrlTree
-    | Promise<boolean | UrlTree>
-    | Observable<boolean | UrlTree> {
+  ) {
     if (this.userService.isLoggedIn()) {
       return true;
     } else {
@@ -33,11 +29,7 @@ export class AuthCanActivateGuard implements CanActivate {
   public canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):
-    | boolean
-    | UrlTree
-    | Promise<boolean | UrlTree>
-    | Observable<boolean | UrlTree> {
+  ) {
     return this.canActivateGenericMethod(route, state);
   }
 }

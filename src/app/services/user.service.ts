@@ -75,7 +75,7 @@ export class UserService {
    */
   public signUp(user: any): Observable<any> {
     return this.http
-      .post(`${this.API_URL}/create`, user)
+      .post(`${this.API_URL}/user/create`, user)
       .pipe(catchError(this.handleError));
   }
 
@@ -86,7 +86,7 @@ export class UserService {
    */
   public login(user: any): Observable<any> {
     return this.http
-      .post(`${this.API_URL}/login`, user)
+      .post(`${this.API_URL}/user/login`, user)
       .pipe(catchError(this.handleError));
   }
 
@@ -118,7 +118,7 @@ export class UserService {
    * @returns Observable<any>
    */
   public getEmail(email: string): Observable<any> {
-    return this.http.get(`${this.API_URL}/get-email/${email}`);
+    return this.http.get(`${this.API_URL}/user/get-email/${email}`);
   }
 
   private handleError(errorResponse: HttpErrorResponse): Observable<any> {

@@ -1,1 +1,29 @@
-<p>dashboard works!</p>
+<div id="mySidenav" class="sidenav">
+  <a class="closebtn" (click)="onNav()">&times;</a>
+  <a (click)="navigate('/dashboard/moments-list')">Moments List</a>
+  <a routerLink="['/dashboard/add-new-moment']">Add new moment</a>
+</div>
+
+<div id="main">
+  <span style="font-size: 30px; cursor: pointer" (click)="onNav()"
+    >&#9776;
+  </span>
+  <!--  -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <form class="d-flex">
+          <button
+            class="btn btn-outline-success"
+            type="submit"
+            (click)="userService.logout()"
+          >
+            Log Out
+          </button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <router-outlet></router-outlet>
+  <!--  -->
+</div>

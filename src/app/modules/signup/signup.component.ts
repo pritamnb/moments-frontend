@@ -9,6 +9,7 @@ import { CustomValidator } from '../../shared/validators/Custom.validators';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { IUserModel } from 'src/app/shared/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -27,7 +28,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     lastName: '',
     email: '',
     password: '',
-    phone: 0,
+    mobile: 0,
     city: '',
   };
   public passwordFieldTextType = false;
@@ -61,10 +62,10 @@ export class SignupComponent implements OnInit, OnDestroy {
       email: 'Enter a valid email id.',
       uniqueEmailAsyncError: 'Email already taken',
     },
-    phone: {
-      required: 'Phone is required.',
-      minlength: 'Phone number should be 10 digits.',
-      maxlength: 'Phone number should be 10 digits.',
+    mobile: {
+      required: 'mobile is required.',
+      minlength: 'mobile number should be 10 digits.',
+      maxlength: 'mobile number should be 10 digits.',
     },
 
     city: {
@@ -73,18 +74,26 @@ export class SignupComponent implements OnInit, OnDestroy {
   };
 
   public formErrors = {
-    name: '',
+    firstName: '',
+    lastName: '',
     password: '',
     confirmPassword: '',
     email: '',
-    phone: '',
+    mobile: '',
     city: '',
   };
   public isLoading = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
+    if (this.userService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
     this.registrationFormCreation();
     // This observable will triggered each an every value insertion in form field
     // and it will call the logValidation() method.
@@ -130,7 +139,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         ],
       ],
       confirmPassword: ['', CustomValidator.matchPassword],
-      phone: new FormControl('', [
+      mobile: new FormControl('', [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(10),
@@ -140,20 +149,6 @@ export class SignupComponent implements OnInit, OnDestroy {
         [Validators.required, Validators.email],
         CustomValidator.uniqueEmailAsync(this.userService)
       ),
-      address: this.fb.group({
-        street: ['', Validators.required],
-        city: ['', Validators.required],
-        state: ['', Validators.required],
-        country: ['', Validators.required],
-        postalCode: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.maxLength(6),
-          ],
-        ],
-      }),
     });
   }
 
@@ -191,6 +186,12 @@ export class SignupComponent implements OnInit, OnDestroy {
   // This is method will help to submit the form after clicking the submit button.
   public onSubmit(event: Event): void {
     event.preventDefault();
+    console.log(
+      'this.registrationForm.valid --------',
+      this.registrationForm.valid
+    );
+    console.log('***********', this.registrationForm.value);
+
     if (this.registrationForm.valid) {
       this.submitButtonStatus = true;
       this.isLoading = true;
@@ -200,7 +201,7 @@ export class SignupComponent implements OnInit, OnDestroy {
 
       this.userRegistrationData.email = userData.email;
       this.userRegistrationData.password = userData.password;
-      this.userRegistrationData.phone = +userData.phone;
+      this.userRegistrationData.mobile = +userData.mobile;
       this.userRegistrationData.city = userData.city;
       console.log('UserData', this.userRegistrationData);
       this.successMessage = '';
@@ -210,7 +211,7 @@ export class SignupComponent implements OnInit, OnDestroy {
           this.userService.signUp(this.userRegistrationData).subscribe(
             (resData) => {
               this.successMessage =
-                'Successfully Registered. Please verify your email';
+                'Successfully Registered. Please Login to continue';
               this.isLoading = false;
               this.registrationForm.reset();
               this.authMessage = '';

@@ -7,7 +7,6 @@
   [formGroup]="loginForm"
   (ngSubmit)="onSubmit($event)"
   class="form-horizontal"
-  *ngIf="!isLoading"
 >
   <div class="alert alert-danger textAlign" *ngIf="failMessage">
     <div>

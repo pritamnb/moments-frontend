@@ -18,7 +18,6 @@ import { ApiInterceptor } from './interceptor/api.interceptor';
     ReactiveFormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule,
     HttpClientModule,
     SharedModule,
   ],

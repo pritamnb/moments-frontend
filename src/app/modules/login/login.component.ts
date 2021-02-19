@@ -54,6 +54,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    if (this.userService.isLoggedIn()) {
+      this.router.navigate(['/dashboard']);
+    }
     this.loginFormCreation();
     // This observable will triggered each an every value insertion in form field
     // and it will call the logValidation() method.
@@ -122,8 +125,8 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.loginForm.reset();
               this.authMessage = '';
               this.isLoading = false;
-              sessionStorage.setItem('JwtToken', resData.jwtToken);
-              this.router.navigate(['/view-users']);
+              sessionStorage.setItem('JwtToken', resData.data.authToken);
+              this.router.navigate(['/dashboard']);
               // console.log(this.loginForm);
             },
             (resError) => {
