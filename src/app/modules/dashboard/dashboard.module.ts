@@ -5,10 +5,14 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { MomentListComponent } from './moment-list/moment-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { DashboardComponent } from './dashboard.component';
+import { AddMomentComponent } from './add-moment/add-moment.component';
 
 @NgModule({
-  declarations: [MomentListComponent],
+  declarations: [MomentListComponent, DashboardComponent, AddMomentComponent],
   imports: [
+    RouterModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,

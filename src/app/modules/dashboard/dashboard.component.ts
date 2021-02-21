@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
       document.getElementById('main').style.marginLeft = '0';
     } else {
       document.getElementById('mySidenav').style.width = '250px';
-      document.getElementById('main').style.marginLeft = '250px';
+      document.getElementById('main').style.marginLeft = '150px';
     }
     this.nav = !this.nav;
   }

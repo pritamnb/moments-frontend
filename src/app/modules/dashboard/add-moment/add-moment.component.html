@@ -1,0 +1,37 @@
+<div class="container-custom">
+  <div class="title-tag">
+    <div class="title">
+      <form class="example-form">
+        <mat-form-field class="example-full-width">
+          <mat-label class="text">Title</mat-label>
+          <input type="text" matInput />
+        </mat-form-field>
+      </form>
+    </div>
+    <div class="tags">
+      <form class="example-form">
+        <mat-form-field class="example-chip-list">
+          <mat-label class="text">Favorite Fruits</mat-label>
+          <mat-chip-list #chipList aria-label="Fruit selection">
+            <mat-chip
+              *ngFor="let fruit of fruits"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(fruit)"
+            >
+              {{ fruit.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="New fruit..."
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+</div>

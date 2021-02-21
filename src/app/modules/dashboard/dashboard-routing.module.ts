@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddMomentComponent } from './add-moment/add-moment.component';
 import { DashboardComponent } from './dashboard.component';
 import { MomentListComponent } from './moment-list/moment-list.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DashboardComponent,
-    children: [
-      {
-        path: 'moments-list',
-        component: MomentListComponent,
-      },
-    ],
+    redirectTo: 'moments-list',
+    pathMatch: 'full',
+  },
+
+  {
+    path: 'moments-list',
+    component: MomentListComponent,
+  },
+  {
+    path: 'add-moment',
+    component: AddMomentComponent,
   },
 ];
 
