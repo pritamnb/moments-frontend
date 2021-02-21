@@ -11,8 +11,13 @@ import * as Enviroment from '../../environments/environment';
 export class UserService {
   private API_URL: string = Enviroment.environment.BASE_URL;
   private isAuthenticated = new BehaviorSubject<boolean>(false);
-
+  private nav = new BehaviorSubject<Boolean>(false);
+  _isAuthenticated = this.isAuthenticated.asObservable();
+  _nav = this.nav.asObservable();
   constructor(private http: HttpClient, private router: Router) {}
+  public setNavState(state: boolean): void {
+    this.nav.next(state);
+  }
 
   /**
    * This will set the account status CONFIRMED as true and UNCONFIRMED as false.

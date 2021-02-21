@@ -19,7 +19,7 @@ export class ApiInterceptor implements HttpInterceptor {
     const token = this.userService.getToken();
     if (token) {
       const clonedRequest = request.clone({
-        headers: request.headers.append('Authorization', `Bearer ${token}`),
+        headers: request.headers.append('x-access-token', `${token}`),
       });
       return next.handle(clonedRequest);
     } else {

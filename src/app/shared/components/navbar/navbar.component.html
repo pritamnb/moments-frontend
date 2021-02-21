@@ -1,0 +1,16 @@
+<div id="main" class="nav-custom">
+  <div class="main-nav-class">
+    <span style="font-size: 30px; cursor: pointer" (click)="onNav()"
+      >&#9776;
+    </span>
+  </div>
+  <div class="logout-button">
+    <button
+      class="btn btn-outline-success"
+      type="submit"
+      (click)="userService.logout()"
+    >
+      Log Out
+    </button>
+  </div>
+</div>

@@ -33,5 +33,14 @@
         </mat-form-field>
       </form>
     </div>
+    <div class="image-upload">
+      <mat-card>
+        <input type="file" (change)="onChange($event)" />
+        <button (click)="onUpload()" class="btn btn-success">Upload</button>
+        <div class="container" *ngIf="loading">
+          <h3>Loading ...</h3>
+        </div>
+      </mat-card>
+    </div>
   </div>
 </div>
