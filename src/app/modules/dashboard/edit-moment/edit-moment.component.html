@@ -36,7 +36,10 @@
     </div>
     <div class="image-upload">
       <mat-card>
-        <input type="file" (change)="onChange($event)" />
+        <ng-container *ngIf="imageURL">
+          <img class="image-sec" [src]="imageURL" />
+        </ng-container>
+        <input type="file" accept="image/*" (change)="onChange($event)" />
         <button mat-button color="primary" (click)="onUpload()">Upload</button>
         <div class="container" *ngIf="loading">
           <h3>Loading ...</h3>

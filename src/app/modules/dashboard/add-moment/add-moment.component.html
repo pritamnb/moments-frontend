@@ -1,16 +1,12 @@
 <div class="container-custom">
-  <!-- <form [formGroup]="momentForm" (ngSubmit)="onSubmit()"> -->
   <div class="title-tag">
     <div class="title">
-      <!-- <form class="example-form"> -->
       <mat-form-field class="example-full-width">
         <mat-label class="text">Title</mat-label>
         <input [(ngModel)]="momentTitle" type="text" matInput />
       </mat-form-field>
-      <!-- </form> -->
     </div>
     <div class="tags">
-      <!-- <form class="example-form"> -->
       <mat-form-field class="example-chip-list">
         <mat-label class="text">Select Tags</mat-label>
         <mat-chip-list #chipList aria-label="Tags">
@@ -32,7 +28,6 @@
           />
         </mat-chip-list>
       </mat-form-field>
-      <!-- </form> -->
     </div>
     <div class="image-upload">
       <mat-card>
@@ -49,5 +44,4 @@
       Submit
     </button>
   </div>
-  <!-- </form> -->
 </div>

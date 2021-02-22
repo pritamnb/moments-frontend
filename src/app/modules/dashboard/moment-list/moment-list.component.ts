@@ -48,7 +48,7 @@ export class MomentListComponent implements OnInit, AfterViewInit {
   editMoment(moment) {
     console.log(moment);
     this.momentervice.setEditMoment(moment);
-    this.router.navigate(['/dashboard/edit-moment']);
+    this.router.navigate([`/dashboard/edit-moment/${moment._id}`]);
   }
   deleteMoment(moment) {
     console.log(moment);

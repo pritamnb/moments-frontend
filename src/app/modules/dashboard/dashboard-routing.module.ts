@@ -21,9 +21,8 @@ const routes: Routes = [
     component: AddMomentComponent,
   },
   {
-    path: 'edit-moment',
+    path: 'edit-moment/:momentId',
     component: EditMomentComponent,
-    data: {},
   },
 ];
 

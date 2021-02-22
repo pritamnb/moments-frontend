@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MomentsService } from 'src/app/services/moments.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 export interface Tags {
   name: string;
 }
@@ -12,47 +13,22 @@ export interface Tags {
   templateUrl: './add-moment.component.html',
   styleUrls: ['./add-moment.component.scss'],
 })
-export class AddMomentComponent implements OnInit {
-  public momentForm: FormGroup;
+export class AddMomentComponent implements OnInit, OnDestroy {
   momentTitle: string;
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: any = [];
+  tags: Tags[] = [];
   loading: boolean;
   file: File = null;
   imageURL: any;
-  constructor(
-    private momentService: MomentsService,
-    private fb: FormBuilder,
-    private router: Router
-  ) {}
+  createMomentSubscription: Subscription;
+  uploadImageSubscription: Subscription;
+  constructor(private momentService: MomentsService, private router: Router) {}
 
-  ngOnInit(): void {
-    this.momentFormCreation();
-  }
-  public momentFormCreation() {
-    this.momentForm = this.fb.group({
-      title: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(20),
-        ],
-      ],
-      tags: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(20),
-        ],
-      ],
-    });
-  }
+  ngOnInit(): void {}
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -60,7 +36,7 @@ export class AddMomentComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.tags.push(value.trim());
+      this.tags.push({ name: value.trim() });
     }
     // Reset the input value
     if (input) {
@@ -80,32 +56,47 @@ export class AddMomentComponent implements OnInit {
   }
   onUpload() {
     console.log(this.file);
-    if (this.file) {
+    if (this.file && this.file.type.includes('image')) {
       this.loading = !this.loading;
-      this.momentService.uploadImage(this.file).subscribe((event: any) => {
-        console.log(event);
-        this.imageURL = event.data;
-        if (typeof event === 'object') {
-          this.loading = false; // Flag variable
-        }
-      });
+      this.uploadImageSubscription = this.momentService
+        .uploadImage(this.file)
+        .subscribe((event: any) => {
+          console.log(event);
+          this.imageURL = event.data;
+          if (typeof event === 'object') {
+            this.loading = false; // Flag variable
+          }
+        });
     }
   }
   onSubmit() {
     const payload = {
       title: this.momentTitle,
-      tags: this.tags,
+      tags: this.tags.map((tag) => tag.name),
       imageUrl: this.imageURL,
     };
     console.log(payload);
-    this.momentService.createMoment(payload).subscribe(
-      (res) => {
-        console.log('_____------------_______', res);
-        this.router.navigate(['/dashboard/list-moment']);
-      },
-      (err) => {
-        console.log('*******', err);
-      }
-    );
+    this.createMomentSubscription = this.momentService
+      .createMoment(payload)
+      .subscribe(
+        (res) => {
+          console.log('_____------------_______', res);
+          this.router.navigate(['/dashboard/list-moment']);
+        },
+        (err) => {
+          console.log('*******', err);
+        }
+      );
+  }
+  /**
+   * while component destroying
+   */
+  ngOnDestroy() {
+    if (this.createMomentSubscription) {
+      this.createMomentSubscription.unsubscribe();
+    }
+    if (this.uploadImageSubscription) {
+      this.uploadImageSubscription.unsubscribe();
+    }
   }
 }

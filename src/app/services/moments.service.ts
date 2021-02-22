@@ -47,6 +47,9 @@ export class MomentsService {
     return this.http.post(`${this.API_URL}/moment/delete`, payload);
   }
   editMoment(payload) {
-    return this.http.post(`${this.API_URL}/moment/edit`, payload);
+    return this.http.put(`${this.API_URL}/moment/update`, payload);
+  }
+  getMoment(momentId) {
+    return this.http.get(`${this.API_URL}/moment/get-moment/${momentId}`);
   }
 }
