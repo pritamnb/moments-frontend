@@ -5,6 +5,7 @@ import { MomentsService } from 'src/app/services/moments.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 export interface Tags {
   name: string;
 }
@@ -24,12 +25,30 @@ export class AddMomentComponent implements OnInit, OnDestroy {
   loading: boolean;
   file: File = null;
   imageURL: any;
+  nav = false;
+
   createMomentSubscription: Subscription;
   uploadImageSubscription: Subscription;
-  constructor(private momentService: MomentsService, private router: Router) {}
+  constructor(
+    private momentService: MomentsService,
+    private router: Router,
+    public userService: UserService
+  ) {
+    this.userService._nav.subscribe((navState: boolean) => {
+      this.nav = navState;
+      this.onNav();
+    });
+  }
 
   ngOnInit(): void {}
-
+  onNav() {
+    if (this.nav) {
+      document.getElementById('main-container').style.marginLeft = '250px';
+    } else {
+      document.getElementById('main-container').style.marginLeft = '0px';
+    }
+    this.nav = !this.nav;
+  }
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;

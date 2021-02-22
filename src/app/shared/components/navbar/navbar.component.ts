@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
       document.getElementById('main').style.marginLeft = '0';
     } else {
       document.getElementById('mySidenav').style.width = '250px';
-      document.getElementById('main').style.marginLeft = '150px';
+      document.getElementById('main').style.marginLeft = '250px';
     }
     this.nav = !this.nav;
     this.userService.setNavState(this.nav);

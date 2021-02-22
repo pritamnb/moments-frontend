@@ -1,54 +1,56 @@
-<div class="container-custom">
-  <div class="title-tag">
-    <div class="title">
-      <mat-form-field class="example-full-width">
-        <mat-label class="text">Title</mat-label>
-        <input [(ngModel)]="momentTitle" type="text" matInput />
-      </mat-form-field>
-    </div>
-    <div class="tags">
-      <mat-form-field class="example-chip-list">
-        <mat-label class="text">Select Tags</mat-label>
-        <mat-chip-list #chipList aria-label="Tags">
-          <mat-chip
-            *ngFor="let tag of tags"
-            [selectable]="selectable"
-            [removable]="removable"
-            (removed)="remove(tag)"
+<div id="main-container">
+  <div class="container-custom">
+    <div class="title-tag">
+      <div class="title">
+        <mat-form-field class="example-full-width">
+          <mat-label class="text">Title</mat-label>
+          <input [(ngModel)]="momentTitle" type="text" matInput />
+        </mat-form-field>
+      </div>
+      <div class="tags">
+        <mat-form-field class="example-chip-list">
+          <mat-label class="text">Select Tags</mat-label>
+          <mat-chip-list #chipList aria-label="Tags">
+            <mat-chip
+              *ngFor="let tag of tags"
+              [selectable]="selectable"
+              [removable]="removable"
+              (removed)="remove(tag)"
+            >
+              {{ tag.name }}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input
+              placeholder="New Tag..."
+              [matChipInputFor]="chipList"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="add($event)"
+            />
+          </mat-chip-list>
+        </mat-form-field>
+      </div>
+      <div class="image-upload">
+        <mat-card>
+          <input type="file" (change)="onChange($event)" />
+          <button
+            mat-button
+            color="primary"
+            [disabled]="!file"
+            (click)="onUpload()"
           >
-            {{ tag.name }}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-          <input
-            placeholder="New Tag..."
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="addOnBlur"
-            (matChipInputTokenEnd)="add($event)"
-          />
-        </mat-chip-list>
-      </mat-form-field>
+            Upload
+          </button>
+          <div class="container" *ngIf="loading">
+            <h3>Loading ...</h3>
+          </div>
+        </mat-card>
+      </div>
     </div>
-    <div class="image-upload">
-      <mat-card>
-        <input type="file" (change)="onChange($event)" />
-        <button
-          mat-button
-          color="primary"
-          [disabled]="!file"
-          (click)="onUpload()"
-        >
-          Upload
-        </button>
-        <div class="container" *ngIf="loading">
-          <h3>Loading ...</h3>
-        </div>
-      </mat-card>
+    <div class="submit-button">
+      <button type="submit" mat-button color="primary" (click)="onSubmit()">
+        Submit
+      </button>
     </div>
-  </div>
-  <div class="submit-button">
-    <button type="submit" mat-button color="primary" (click)="onSubmit()">
-      Submit
-    </button>
   </div>
 </div>

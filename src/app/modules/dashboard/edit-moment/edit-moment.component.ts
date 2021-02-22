@@ -51,7 +51,7 @@ export class EditMomentComponent implements OnInit {
   }
   onNav() {
     if (this.nav) {
-      document.getElementById('main-container').style.marginLeft = '150px';
+      document.getElementById('main-container').style.marginLeft = '250px';
     } else {
       document.getElementById('main-container').style.marginLeft = '0px';
     }

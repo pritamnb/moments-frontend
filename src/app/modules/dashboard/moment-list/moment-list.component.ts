@@ -54,12 +54,8 @@ export class MomentListComponent implements OnInit, AfterViewInit {
   }
   onNav() {
     if (this.nav) {
-      // document.getElementById('mySidenav').style.width = '0';
-      // document.getElementById('main').style.marginLeft = '0';
-      document.getElementById('main-container').style.marginLeft = '150px';
+      document.getElementById('main-container').style.marginLeft = '250px';
     } else {
-      // document.getElementById('mySidenav').style.width = '250px';
-      // document.getElementById('main').style.marginLeft = '150px';
       document.getElementById('main-container').style.marginLeft = '0px';
     }
     this.nav = !this.nav;
