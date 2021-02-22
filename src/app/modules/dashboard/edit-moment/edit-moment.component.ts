@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MomentsService } from 'src/app/services/moments.service';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/app/services/user.service';
 
 export interface Tags {
   name: string;
@@ -28,17 +29,33 @@ export class EditMomentComponent implements OnInit {
   file: File = null;
   imageURL: any;
   momentId: string;
+  nav = false;
+
   constructor(
     private momentService: MomentsService,
     private fb: FormBuilder,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    public userService: UserService
+  ) {
+    this.userService._nav.subscribe((navState: boolean) => {
+      this.nav = navState;
+      this.onNav();
+    });
+  }
 
   ngOnInit(): void {
     this.momentId = this.route.snapshot.params['momentId'];
     console.log(this.momentId);
     this.getMomentById(this.momentId);
+  }
+  onNav() {
+    if (this.nav) {
+      document.getElementById('main-container').style.marginLeft = '150px';
+    } else {
+      document.getElementById('main-container').style.marginLeft = '0px';
+    }
+    this.nav = !this.nav;
   }
   getMomentById(momentId) {
     this.getMomentByIdSubscription = this.momentService

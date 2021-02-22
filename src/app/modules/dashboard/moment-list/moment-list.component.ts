@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { MomentsService } from 'src/app/services/moments.service';
+import { UserService } from 'src/app/services/user.service';
 
 export interface PeriodicElement {
   image: string;
@@ -34,15 +35,34 @@ export class MomentListComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['no', 'image', 'title', 'tags', 'action'];
   dataSource = new MatTableDataSource();
   deleteMomentSubscription: Subscription;
+  nav = false;
 
   constructor(
     private momentervice: MomentsService,
     private router: Router,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    public userService: UserService
+  ) {
+    this.userService._nav.subscribe((navState: boolean) => {
+      this.nav = navState;
+      this.onNav();
+    });
+  }
 
   ngOnInit(): void {
     this.listAllMoments();
+  }
+  onNav() {
+    if (this.nav) {
+      // document.getElementById('mySidenav').style.width = '0';
+      // document.getElementById('main').style.marginLeft = '0';
+      document.getElementById('main-container').style.marginLeft = '150px';
+    } else {
+      // document.getElementById('mySidenav').style.width = '250px';
+      // document.getElementById('main').style.marginLeft = '150px';
+      document.getElementById('main-container').style.marginLeft = '0px';
+    }
+    this.nav = !this.nav;
   }
   listAllMoments(): void {
     this.momentervice.listAllMoments().subscribe(

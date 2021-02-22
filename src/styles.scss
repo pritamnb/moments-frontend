@@ -10,11 +10,14 @@ body {
 }
 
 @import "~bootstrap/dist/css/bootstrap.min.css";
-.mat-form-field-underline {
-  background-color: black !important;
-}
+// .mat-form-field-underline {
+//   background-color: black !important;
+// }
 // Mat table
 
 .mat-table {
   width: 100%;
+}
+.active {
+  background-color: #001b30 !important;
 }
