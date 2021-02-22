@@ -14,13 +14,18 @@ export interface createMoment {
 })
 export class MomentsService {
   private API_URL: string = Enviroment.environment.BASE_URL;
+  private editMomentObservable = new BehaviorSubject<any>({});
+  _editMomentObservable = this.editMomentObservable.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {}
+  setEditMoment(moment) {
+    this.editMomentObservable.next(moment);
+  }
   /**
    * This API will return the imageURL
    * @param image type file
    */
-  public uploadImage(file: any) {
+  uploadImage(file: any) {
     // Create form data
     const formData = new FormData();
 
@@ -31,7 +36,17 @@ export class MomentsService {
     // with formData as req
     return this.http.post(`${this.API_URL}/image/upload`, formData);
   }
-  public createMoment(payload: createMoment) {
+  createMoment(payload: createMoment) {
     return this.http.post(`${this.API_URL}/moment/create`, payload);
+  }
+
+  listAllMoments() {
+    return this.http.get(`${this.API_URL}/moment/moment-list`);
+  }
+  deleteMoment(payload) {
+    return this.http.post(`${this.API_URL}/moment/delete`, payload);
+  }
+  editMoment(payload) {
+    return this.http.post(`${this.API_URL}/moment/edit`, payload);
   }
 }

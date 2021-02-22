@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MomentsService } from 'src/app/services/moments.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MomentsService } from 'src/app/services/moments.service';
+import { MatChipInputEvent } from '@angular/material/chips';
+
 export interface Tags {
   name: string;
 }
 @Component({
-  selector: 'app-add-moment',
-  templateUrl: './add-moment.component.html',
-  styleUrls: ['./add-moment.component.scss'],
+  selector: 'app-edit-moment',
+  templateUrl: './edit-moment.component.html',
+  styleUrls: ['./edit-moment.component.scss'],
 })
-export class AddMomentComponent implements OnInit {
+export class EditMomentComponent implements OnInit {
   public momentForm: FormGroup;
   momentTitle: string;
   visible = true;
@@ -20,7 +21,7 @@ export class AddMomentComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  tags: any = [];
+  tags: Tags[] = [];
   loading: boolean;
   file: File = null;
   imageURL: any;
@@ -28,31 +29,17 @@ export class AddMomentComponent implements OnInit {
     private momentService: MomentsService,
     private fb: FormBuilder,
     private router: Router
-  ) {}
+  ) {
+    this.momentService._editMomentObservable.subscribe((res) => {
+      console.log('------------------moment', res);
 
-  ngOnInit(): void {
-    this.momentFormCreation();
-  }
-  public momentFormCreation() {
-    this.momentForm = this.fb.group({
-      title: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(20),
-        ],
-      ],
-      tags: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.maxLength(20),
-        ],
-      ],
+      this.momentTitle = res.title;
+      this.tags = res.tags;
+      this.imageURL = res.imageUrl;
     });
   }
+
+  ngOnInit(): void {}
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -60,7 +47,7 @@ export class AddMomentComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.tags.push(value.trim());
+      this.tags.push({ name: value.trim() });
     }
     // Reset the input value
     if (input) {
@@ -91,14 +78,14 @@ export class AddMomentComponent implements OnInit {
       });
     }
   }
-  onSubmit() {
+  onEdit() {
     const payload = {
       title: this.momentTitle,
-      tags: this.tags,
+      tags: this.tags.map((tag) => tag.name),
       imageUrl: this.imageURL,
     };
     console.log(payload);
-    this.momentService.createMoment(payload).subscribe(
+    this.momentService.editMoment(payload).subscribe(
       (res) => {
         console.log('_____------------_______', res);
         this.router.navigate(['/dashboard/list-moment']);

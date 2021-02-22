@@ -8,9 +8,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { AddMomentComponent } from './add-moment/add-moment.component';
+import { EditMomentComponent } from './edit-moment/edit-moment.component';
 
 @NgModule({
-  declarations: [MomentListComponent, DashboardComponent, AddMomentComponent],
+  declarations: [
+    MomentListComponent,
+    DashboardComponent,
+    AddMomentComponent,
+    EditMomentComponent,
+  ],
   imports: [
     RouterModule,
     CommonModule,
