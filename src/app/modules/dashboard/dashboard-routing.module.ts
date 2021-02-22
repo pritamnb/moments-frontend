@@ -8,7 +8,7 @@ import { MomentListComponent } from './moment-list/moment-list.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'moments-list',
+    redirectTo: 'add-moment',
     pathMatch: 'full',
   },
 

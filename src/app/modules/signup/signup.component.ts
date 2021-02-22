@@ -212,6 +212,8 @@ export class SignupComponent implements OnInit, OnDestroy {
             (resData) => {
               this.successMessage =
                 'Successfully Registered. Please Login to continue';
+              this.router.navigate(['/login']);
+
               this.isLoading = false;
               this.registrationForm.reset();
               this.authMessage = '';

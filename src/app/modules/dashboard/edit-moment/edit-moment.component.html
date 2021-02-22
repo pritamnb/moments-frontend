@@ -40,7 +40,13 @@
           <ng-container *ngIf="imageURL">
             <img class="image-sec" [src]="imageURL" />
           </ng-container>
-          <input type="file" accept="image/*" (change)="onChange($event)" />
+          <label for="selectfile"> <mat-icon>library_add</mat-icon></label>
+          <input
+            id="selectfile"
+            type="file"
+            (change)="onChange($event)"
+            style="display: none"
+          />
           <button mat-button color="primary" (click)="onUpload()">
             Upload
           </button>

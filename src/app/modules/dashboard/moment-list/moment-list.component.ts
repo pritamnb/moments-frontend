@@ -64,10 +64,12 @@ export class MomentListComponent implements OnInit, AfterViewInit {
     this.momentervice.listAllMoments().subscribe(
       (res: any) => {
         console.log(res);
-        this.dataSource = new MatTableDataSource(res.list.moments);
-        this.cdr.detectChanges();
-        setTimeout(() => (this.dataSource.paginator = this.paginator));
-        setTimeout(() => (this.dataSource.sort = this.sort));
+        if (res.list) {
+          this.dataSource = new MatTableDataSource(res.list.moments);
+          this.cdr.detectChanges();
+          setTimeout(() => (this.dataSource.paginator = this.paginator));
+          setTimeout(() => (this.dataSource.sort = this.sort));
+        }
       },
       (err) => {
         console.log(err);
