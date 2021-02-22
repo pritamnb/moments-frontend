@@ -5,9 +5,8 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import * as Enviroment from '../../environments/environment';
 export interface createMoment {
-  userId: string;
   imageUrl: string;
-  tags: [];
+  tags: any;
   title: string;
 }
 @Injectable({

@@ -96,28 +96,6 @@ export class UserService {
   }
 
   /**
-   * This will confirm the email by call backend api.
-   * @param token
-   * @returns Observable<any>
-   */
-  public confirmEmail(token: string): Observable<any> {
-    return this.http
-      .post(`${this.API_URL}/confirmemail`, { token: token })
-      .pipe(catchError(this.handleError));
-  }
-
-  /**
-   * This will fetch all users by calling backend api.
-   * @param user()
-   * @returns Observable<any>
-   */
-  public getAllUser(): Observable<any> {
-    return this.http
-      .get(`${this.API_URL}/get-users`)
-      .pipe(catchError(this.handleError));
-  }
-
-  /**
    * This will fetch all emails by calling backend api.
    * @param user()
    * @returns Observable<any>

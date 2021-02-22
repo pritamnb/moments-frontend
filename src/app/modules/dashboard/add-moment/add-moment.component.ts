@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MomentsService } from 'src/app/services/moments.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export interface Tags {
   name: string;
 }
@@ -11,17 +12,42 @@ export interface Tags {
   styleUrls: ['./add-moment.component.scss'],
 })
 export class AddMomentComponent implements OnInit {
+  public momentForm: FormGroup;
+  momentTitle: string;
   visible = true;
   selectable = true;
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruits: Tags[] = [];
+  tags: Tags[] = [];
   loading: boolean;
   file: File = null;
-  constructor(private momentService: MomentsService) {}
+  imageURL: any;
+  constructor(private momentService: MomentsService, private fb: FormBuilder) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.momentFormCreation();
+  }
+  public momentFormCreation() {
+    this.momentForm = this.fb.group({
+      title: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(20),
+        ],
+      ],
+      tags: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(20),
+        ],
+      ],
+    });
+  }
 
   add(event: MatChipInputEvent): void {
     const input = event.input;
@@ -29,9 +55,8 @@ export class AddMomentComponent implements OnInit {
 
     // Add our fruit
     if ((value || '').trim()) {
-      this.fruits.push({ name: value.trim() });
+      this.tags.push({ name: value.trim() });
     }
-
     // Reset the input value
     if (input) {
       input.value = '';
@@ -39,24 +64,42 @@ export class AddMomentComponent implements OnInit {
   }
 
   remove(fruit: Tags): void {
-    const index = this.fruits.indexOf(fruit);
+    const index = this.tags.indexOf(fruit);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.tags.splice(index, 1);
     }
   }
   onChange(event) {
     this.file = event.target.files[0];
   }
   onUpload() {
-    this.loading = !this.loading;
     console.log(this.file);
-    this.momentService.uploadImage(this.file).subscribe((event: any) => {
-      console.log(event);
-
-      if (typeof event === 'object') {
-        this.loading = false; // Flag variable
+    if (this.file) {
+      this.loading = !this.loading;
+      this.momentService.uploadImage(this.file).subscribe((event: any) => {
+        console.log(event);
+        this.imageURL = event.data;
+        if (typeof event === 'object') {
+          this.loading = false; // Flag variable
+        }
+      });
+    }
+  }
+  onSubmit() {
+    const payload = {
+      title: this.momentTitle,
+      tags: this.tags.map((tag) => tag.name),
+      imageUrl: this.imageURL,
+    };
+    console.log(payload);
+    this.momentService.createMoment(payload).subscribe(
+      (res) => {
+        console.log('_____------------_______', res);
+      },
+      (err) => {
+        console.log('*******', err);
       }
-    });
+    );
   }
 }
