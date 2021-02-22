@@ -76,17 +76,21 @@ export class AddMomentComponent implements OnInit, OnDestroy {
       imageUrl: this.imageURL,
     };
     console.log(payload);
-    this.createMomentSubscription = this.momentService
-      .createMoment(payload)
-      .subscribe(
-        (res) => {
-          console.log('_____------------_______', res);
-          this.router.navigate(['/dashboard/list-moment']);
-        },
-        (err) => {
-          console.log('*******', err);
-        }
-      );
+    if (this.momentTitle && this.tags && this.imageURL) {
+      this.createMomentSubscription = this.momentService
+        .createMoment(payload)
+        .subscribe(
+          (res) => {
+            console.log('_____------------_______', res);
+            this.router.navigate(['/dashboard/moments-list']);
+          },
+          (err) => {
+            console.log('*******', err);
+          }
+        );
+    } else {
+      console.log('Select required fields');
+    }
   }
   /**
    * while component destroying

@@ -103,14 +103,16 @@ export class EditMomentComponent implements OnInit {
       imageUrl: this.imageURL,
     };
     console.log(payload);
-    this.momentService.editMoment(payload).subscribe(
-      (res) => {
-        console.log('_____------------_______', res);
-        this.router.navigate(['/dashboard/moments-list']);
-      },
-      (err) => {
-        console.log('*******', err);
-      }
-    );
+    if (this.momentTitle && this.tags && this.imageURL) {
+      this.momentService.editMoment(payload).subscribe(
+        (res) => {
+          console.log('_____------------_______', res);
+          this.router.navigate(['/dashboard/moments-list']);
+        },
+        (err) => {
+          console.log('*******', err);
+        }
+      );
+    }
   }
 }
