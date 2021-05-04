@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { IUserModel } from 'src/app/shared/models/user.model';
 
+import { SocialAuthService } from "angularx-social-login";
+import { FacebookLoginProvider, GoogleLoginProvider, SocialUser } from "angularx-social-login";
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -47,13 +49,22 @@ export class LoginComponent implements OnInit, OnDestroy {
   };
   public isLoading = false;
 
+  user: SocialUser;
+  loggedIn = false;
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authService: SocialAuthService
+  ) { }
 
   ngOnInit(): void {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      console.log(this.user);
+    });
+
     if (this.userService.isLoggedIn()) {
       this.router.navigate(['/dashboard']);
     }
@@ -146,6 +157,25 @@ export class LoginComponent implements OnInit, OnDestroy {
     const userLoginData = Object.assign({}, this.loginForm.value);
     return userLoginData;
   }
+
+
+  signInWithGoogle(): void {
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
+
+  signInWithFB(): void {
+    console.log('fb called');
+
+    this.authService.signIn(FacebookLoginProvider.PROVIDER_ID);
+  }
+
+  signOut(): void {
+    this.authService.signOut();
+  }
+  refreshToken(): void {
+    this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
